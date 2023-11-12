@@ -52,13 +52,40 @@ public class Node {
 	public List<Node> generateAllCandidates() {
 		List<Node> result = new ArrayList<Node>();
 
-		// Enter your code here
+		for (int i = 0; i < N; i++) {
+			Node node=new Node(this.state);
+			state[i].move();
+			result.add(node);
+		}
 		return result;
 	}
-
+ 
+	public Node getBestCandidate() {
+		List<Node> list = generateAllCandidates();
+		Node result = null;
+		int temp = Integer.MAX_VALUE;
+		for (Node node : list) {
+			if(node.getH()<temp) {
+				temp=node.getH();
+				result=node;
+			}
+		}
+		return result;
+	}
+	public Node execute(Node initialState) {
+		Node current = initialState;
+		while(true) {
+			Node neighbor = current.getBestCandidate();
+			if(neighbor.getH()<current.getH()) {
+				current = neighbor;
+			}else {
+				return current;
+			}
+		}
+	}
 	public Node selectNextRandomCandidate() {
 		// Enter your code here
-		return null;
+		return generateAllCandidates().get((int)(Math.random()*N));
 	}
 
 	public void displayBoard() {
